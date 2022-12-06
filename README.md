@@ -1,0 +1,2 @@
+# shrutin
+study purpose
