@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking System</title>
+    <style>
+        /* General Reset and Font */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ae9994, #ddbda5); /* Beautiful gradient background */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Container for Form */
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Fields */
+        form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        input, select {
+            padding: 12px;
+            font-size: 1.1em;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f4f4f4;
+        }
+
+        /* Hover Effect for Input Fields */
+        input:hover, select:hover {
+            border-color: #e8afa1; /* Red accent for focus */
+            background-color: #fef7f0;
+        }
+
+        /* Button Styles */
+        button {
+            padding: 15px;
+            background-color: #ff7e5f; /* Bright color to catch attention */
+            color: white;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #feb47b; /* Lighter on hover */
+        }
+
+        /* Summary Section */
+        #summary {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e8ffe8;
+            border: 1px solid #d1ffd1;
+            border-radius: 12px;
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hotel Booking</h1>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Mobile Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="roomType">Room Type:</label>
+                <select id="roomType" name="roomType" required>
+                    <option value="single">Single Room</option>
+                    <option value="double">Double Room</option>
+                    <option value="suite">Suite</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="checkin">Check-in Date:</label>
+                <input type="date" id="checkin" name="checkin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="checkout">Check-out Date:</label>
+                <input type="date" id="checkout" name="checkout" required>
+            </div>
+
+            <div class="form-group">
+                <label for="guests">Number of Guests:</label>
+                <input type="number" id="guests" name="guests" min="1" required>
+            </div>
+
+            <button type="button" id="book-now">Book Now</button>
+        </form>
+
+        <!-- Booking Summary -->
+        <div id="summary" class="hidden">
+            <h2>Booking Summary</h2>
+            <p>Name: <span id="summaryName"></span></p>
+            <p>Email: <span id="summaryEmail"></span></p>
+            <p>Mobile: <span id="summaryPhone"></span></p>
+            <p>Room Type: <span id="summaryRoom"></span></p>
+            <p>Check-in Date: <span id="summaryCheckin"></span></p>
+            <p>Check-out Date: <span id="summaryCheckout"></span></p>
+            <p>Number of Guests: <span id="summaryGuests"></span></p>
+            <p>Total Cost: Rs-<span id="costValue"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const mobile = document.getElementById("phone").value;
+            const checkInDate = document.getElementById("checkin").value;
+            const checkOutDate = document.getElementById("checkout").value;
+            const roomType = document.getElementById("roomType").value;
+            const numberOfGuests = parseInt(document.getElementById("guests").value);
+
+            if (!name || !email || !mobile || !checkInDate || !checkOutDate || !roomType || !numberOfGuests) {
+                alert("Please fill in all the fields.");
+                return;
+            }
+
+            let pricePerRoom = roomType === "single" ? 100 : roomType === "double" ? 150 : 200;
+            let totalCost = pricePerRoom * numberOfGuests;
+
+            document.getElementById("summaryName").textContent = name;
+            document.getElementById("summaryEmail").textContent = email;
+            document.getElementById("summaryPhone").textContent = mobile;
+            document.getElementById("summaryCheckin").textContent = checkInDate;
+            document.getElementById("summaryCheckout").textContent = checkOutDate;
+            document.getElementById("summaryRoom").textContent = roomType.charAt(0).toUpperCase() + roomType.slice(1);
+            document.getElementById("summaryGuests").textContent = numberOfGuests;
+            document.getElementById("costValue").textContent = totalCost;
+
+            document.getElementById("summary").style.display = "block";
+        }
+
+        document.getElementById("book-now").addEventListener("click", calculateTotal);
+    </script>
+</body>
+</html>
